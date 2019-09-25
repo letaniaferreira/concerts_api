@@ -1,4 +1,6 @@
 from flask import Flask, jsonify, request
+import requests
+import os
 app = Flask(__name__)
 
 tasks={
@@ -16,6 +18,12 @@ tasks={
         'test': "hi"
     }
 }
+
+@app.route('/performers')
+def get_performers():
+    client_id = os.environ['CLIENT_ID']
+    response = requests.get('https://api.seatgeek.com/2/performers?client_id={}'.format(client_id))
+    return response.json()
 
 @app.route('/')
 def get_tasks():
