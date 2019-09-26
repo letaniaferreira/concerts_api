@@ -21,9 +21,18 @@ tasks={
 
 @app.route('/performers')
 def get_performers():
+
+    bands = []
     client_id = os.environ['CLIENT_ID']
     response = requests.get('https://api.seatgeek.com/2/performers?client_id={}'.format(client_id))
-    return response.json()
+    performers_dict = response.json()
+    for performer in performers_dict['performers']:
+        #performer does not print anything
+        #print('these are the names of the bands {}'.format(performer))
+        if performer['type'] == 'band':
+            bands.append(performer['name'])
+
+    return jsonify({'bands': bands})
 
 @app.route('/')
 def get_tasks():
